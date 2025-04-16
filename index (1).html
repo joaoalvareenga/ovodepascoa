@@ -1,0 +1,113 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Acerte seu ovo, Luana!</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fff6e9;
+      text-align: center;
+      padding: 50px;
+    }
+    h1 {
+      color: #8a5a44;
+    }
+    input {
+      padding: 10px;
+      margin: 10px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      background-color: #8a5a44;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #message {
+      margin-top: 20px;
+      font-size: 18px;
+    }
+    .confetti {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      top: 0;
+      left: 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Luana, acerte o ovo misterioso! 🍫</h1>
+  <p>Você tem 2 chances para adivinhar o sabor e a marca do ovo.</p>
+  <input id="sabor" placeholder="Digite o sabor do ovo">
+  <br>
+  <input id="marca" placeholder="Digite a marca do ovo">
+  <br>
+  <button onclick="verificarRespostas()">Confirmar</button>
+  <div id="message"></div>
+
+  <canvas class="confetti" id="confetti-canvas"></canvas>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script>
+    let tentativas = 0;
+
+    function verificarRespostas() {
+      const sabor = document.getElementById('sabor').value.trim().toLowerCase();
+      const marca = document.getElementById('marca').value.trim().toLowerCase();
+      const mensagem = document.getElementById('message');
+
+      if (sabor === 'pistache' && marca === 'bacio di latte') {
+        mensagem.style.color = 'green';
+        mensagem.innerText = 'Parabéns, Luana! Você acertou! 🎉';
+        confetti();
+      } else {
+        tentativas++;
+        mensagem.style.color = 'red';
+        if (tentativas === 1) {
+          mensagem.innerText = 'Errou, Luana! Tente mais uma vez, é sua última chance!';
+        } else {
+          mensagem.innerText = 'Ah não, Luana! Acabaram suas chances 😢';
+        }
+      }
+    }
+
+    function confetti() {
+      const duration = 2 * 1000;
+      const end = Date.now() + duration;
+
+      function frame() {
+        confettiLib({
+          particleCount: 5,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0 }
+        });
+        confettiLib({
+          particleCount: 5,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1 }
+        });
+
+        if (Date.now() < end) {
+          requestAnimationFrame(frame);
+        }
+      }
+
+      frame();
+    }
+
+    const confettiLib = window.confetti;
+  </script>
+</body>
+</html>
